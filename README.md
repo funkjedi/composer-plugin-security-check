@@ -5,8 +5,8 @@ Performs a securty check on your project's depenencies using the SensioLabs Secu
 
 The SensioLabs Security Checker is a command line tool that checks if your
 application uses dependencies with known security vulnerabilities. It uses the
-[SensioLabs Security Check Web service][http://security.sensiolabs.org/] and the
-[Security Advisories Database][https://github.com/FriendsOfPHP/security-advisories].
+[SensioLabs Security Check Web service](http://security.sensiolabs.org) and the
+[Security Advisories Database](https://github.com/FriendsOfPHP/security-advisories).
 
 ## Installation
 
