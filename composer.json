@@ -5,7 +5,7 @@
   "type": "composer-plugin",
   "require": {
     "composer-plugin-api": "^1.0",
-    "sensiolabs/security-checker": "^4.1"
+    "sensiolabs/security-checker": "^5.0"
   },
   "require-dev": {
     "composer/composer": "^1.4"

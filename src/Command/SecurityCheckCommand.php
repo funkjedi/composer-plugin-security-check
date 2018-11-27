@@ -25,12 +25,13 @@ class SecurityCheckCommand extends BaseCommand
         $this
             ->setName('check-security')
             ->setDefinition([
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The output format', 'text'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The output format', 'ansi'),
                 new InputOption('end-point', '', InputOption::VALUE_REQUIRED, 'The security checker server URL'),
                 new InputOption('timeout', '', InputOption::VALUE_REQUIRED, 'The HTTP timeout in seconds'),
+                new InputOption('token', '', InputOption::VALUE_REQUIRED, 'The server token', ''),
             ])
-            ->setDescription('Checks security issues in your project dependencies.')
-            ->setHelp(<<<EOT
+            ->setDescription('Checks security issues in your project dependencies')
+            ->setHelp(<<<EOF
 The <info>%command.name%</info> command looks for security issues in the
 project dependencies:
 
@@ -40,9 +41,8 @@ By default, the command displays the result in plain text, but you can also
 configure it to output JSON instead by using the <info>--format</info> option:
 
 <info>php %command.full_name% --format=json</info>
-EOT
-            )
-        ;
+EOF
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -64,35 +64,21 @@ EOT
             $checker->getCrawler()->setTimeout($timeout);
         }
 
+        if ($token = $input->getOption('token')) {
+            $checker->getCrawler()->setToken($token);
+        }
+
         try {
-            $vulnerabilities = $checker->check($lockfile);
+            $result = $checker->check($lockfile, $input->getOption('format'));
         } catch (ExceptionInterface $e) {
             $output->writeln($this->getHelperSet()->get('formatter')->formatBlock($e->getMessage(), 'error', true));
 
             return 1;
         }
 
-        switch ($input->getOption('format')) {
-            case 'json':
-                $formatter = new JsonFormatter;
-                break;
-            case 'simple':
-                $formatter = new SimpleFormatter($this->getHelperSet()->get('formatter'));
-                break;
-            case 'text':
-            default:
-                $formatter = new TextFormatter($this->getHelperSet()->get('formatter'));
-        }
+        $output->writeln((string) $result);
 
-        if (!is_array($vulnerabilities)) {
-            $output->writeln($this->getHelperSet()->get('formatter')->formatBlock('Security Checker Server returned garbage.', 'error', true));
-
-            return 127;
-        }
-
-        $formatter->displayResults($output, $lockfile, $vulnerabilities);
-
-        if ($checker->getLastVulnerabilityCount() > 0) {
+        if (count($result) > 0) {
             return 1;
         }
     }
