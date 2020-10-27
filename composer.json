@@ -4,15 +4,21 @@
   "license": "MIT",
   "type": "composer-plugin",
   "require": {
-    "composer-plugin-api": "^1.0",
+    "composer-plugin-api": "^1.0 || ^2.0",
     "sensiolabs/security-checker": "^5.0 || ^6.0"
   },
   "require-dev": {
-    "composer/composer": "^1.4"
+    "composer/composer": "^2.0",
+    "phpunit/phpunit": "^9.3"
   },
   "autoload": {
     "psr-4": {
       "ComposerSecurityCheck\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
     }
   },
   "extra": {

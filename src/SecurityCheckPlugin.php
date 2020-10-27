@@ -11,15 +11,19 @@ use ComposerSecurityCheck\Command\CommandProvider;
 
 class SecurityCheckPlugin implements PluginInterface, CapableInterface
 {
-    /**
-     * Apply plugin modifications to Composer
-     *
-     * @param Composer    $composer
-     * @param IOInterface $io
-     */
     public function activate(Composer $composer, IOInterface $io)
     {
-        //
+        // do nothing
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        // do nothing
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // do nothing
     }
 
     /**

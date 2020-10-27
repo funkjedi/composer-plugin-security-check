@@ -4,4 +4,7 @@
 /phpunit.xml
 /.idea/
 /*.iml
+/tests/
 /vendor/
+.phpunit.result.cache
+phpunit.xml
